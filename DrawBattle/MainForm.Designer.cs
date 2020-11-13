@@ -37,15 +37,15 @@ namespace DrawBattle
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Cross;
             this.pictureBox1.Location = new System.Drawing.Point(240, 44);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1058, 454);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             g = this.pictureBox1.CreateGraphics();
             // 
@@ -67,19 +67,59 @@ namespace DrawBattle
             switch (e.Button)
             {
                 case MouseButtons.Right:
-                    if (c)
-                    {
-                        pictureBox1.Cursor = Cursors.Cross;
-                        c = false;
-                    }
-                    else
-                    {
-                        pictureBox1.Cursor = Cursors.Hand;
-                        c = true;
-                    }
+                    ChangeCursor();
                     break;
                 default:
                     break;
+            }
+        }
+
+
+
+        private void ChangeCursor()
+        {
+            if (c)
+            {
+                pictureBox1.Cursor = Cursors.Cross;
+                c = false;
+            }
+            else
+            {
+                pictureBox1.Cursor = Cursors.Hand;
+                c = true;
+            }
+        }
+
+        private void DrawByMouse(MouseEventArgs e)
+        {
+            if (!c)
+            {
+                if (f)
+                {
+                    x = e.X;
+                    y = e.Y;
+                    f = false;
+                }
+                else
+                {
+                    g.DrawLine(p, x, y, e.X, e.Y);
+                    x = e.X;
+                    y = e.Y;
+                }
+                POINT_temp.Add(new PointF(x, y));
+            }
+        }
+
+        private void DragByMouse(MouseEventArgs e)
+        {
+            if (c)
+            {
+                g.Clear(Color.White);
+                for (int tick = 0; tick < POINT_temp.Count; tick++)
+                {
+                    POINT_temp[tick] = POINT_temp[tick].X + 5.1f;
+                }
+                g.DrawLines(p, POINT_temp.ToArray());
             }
         }
 
@@ -88,24 +128,13 @@ namespace DrawBattle
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    if (!c)
+                    if (c)
                     {
-                        if (f)
-                        {
-                            x = e.X;
-                            y = e.Y;
-                            f = false;
-                            Point point = new Point(x, y);
-                            points.Add(point);
-                        }
-                        else
-                        {
-                            g.DrawLine(p, x, y, e.X, e.Y);
-                            x = e.X;
-                            y = e.Y;
-                            Point point = new Point(x, y);
-                            points.Add(point);
-                        }
+                        DragByMouse(e);
+                    }
+                    else
+                    {
+                        DrawByMouse(e);
                     }
                     break;
                 default:
@@ -116,7 +145,6 @@ namespace DrawBattle
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             f = true;
-            points.Clear();
         }
 
         #endregion

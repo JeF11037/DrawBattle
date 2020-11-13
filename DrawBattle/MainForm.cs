@@ -21,6 +21,9 @@ namespace DrawBattle
 
         bool c = false;
 
+        List<List<PointF>> POINT_all = new List<List<PointF>>();
+        List<PointF> POINT_temp = new List<PointF>();
+
         public MainForm()
         {
             InitializeComponent();

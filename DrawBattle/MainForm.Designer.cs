@@ -47,6 +47,7 @@ namespace DrawBattle
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             g = this.pictureBox1.CreateGraphics();
             // 
             // MainForm
@@ -102,24 +103,28 @@ namespace DrawBattle
                 }
                 else
                 {
-                    g.DrawLine(p, x, y, e.X, e.Y);
+                    g.DrawLine(p_w, x, y, e.X, e.Y);
                     x = e.X;
                     y = e.Y;
                 }
-                POINT_temp.Add(new PointF(x, y));
+                POINT_temp.Add(new Point(x, y));
             }
         }
 
-        private void DragByMouse(MouseEventArgs e)
+        private async void DragByMouse(MouseEventArgs e)
         {
             if (c)
             {
-                g.Clear(Color.White);
-                for (int tick = 0; tick < POINT_temp.Count; tick++)
+                points = POINT_temp.ToArray();
+                POINT_temp.Clear();
+                g.DrawLines(p_w, points);
+                g.DrawLines(p, points);
+                foreach (var el in points)
                 {
-                    POINT_temp[tick] = POINT_temp[tick].X + 5.1f;
+                    el.Offset(e.X - MOUSE_offset.X, e.Y - MOUSE_offset.Y);
+                    POINT_temp.Add(el);
                 }
-                g.DrawLines(p, POINT_temp.ToArray());
+                await System.Threading.Tasks.Task.Delay(100);
             }
         }
 
@@ -140,11 +145,33 @@ namespace DrawBattle
                 default:
                     break;
             }
+            MOUSE_offset = e.Location;
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             f = true;
+            if (points.Length > 0)
+            {
+                if (c)
+                {
+                    g.Clear(Color.White);
+                }
+                g.DrawLines(p_w, points);
+            }
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    if (c)
+                    {
+                        g.Clear(Color.White);
+                    }
+                    break;
+            }
         }
 
         #endregion

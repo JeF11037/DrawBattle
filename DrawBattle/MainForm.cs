@@ -13,7 +13,8 @@ namespace DrawBattle
     public partial class MainForm : Form
     {
         Graphics g;
-        Pen p = new Pen(Brushes.Black, 2);
+        Pen p = new Pen(Brushes.White, 2);
+        Pen p_w = new Pen(Brushes.Black, 2);
 
         int x;
         int y;
@@ -21,8 +22,9 @@ namespace DrawBattle
 
         bool c = false;
 
-        List<List<PointF>> POINT_all = new List<List<PointF>>();
-        List<PointF> POINT_temp = new List<PointF>();
+        List<Point> POINT_temp = new List<Point>();
+        Point MOUSE_offset = new Point();
+        Point[] points = new Point[] { };
 
         public MainForm()
         {

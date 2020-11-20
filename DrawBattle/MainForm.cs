@@ -12,19 +12,22 @@ namespace DrawBattle
 {
     public partial class MainForm : Form
     {
-        Graphics g;
-        Pen p = new Pen(Brushes.White, 2);
-        Pen p_w = new Pen(Brushes.Black, 2);
+        Graphics GRAPHICS_canvas;
+        Pen PEN_COLOR_white = new Pen(Brushes.White, 2);
+        Pen PEN_COLOR_black = new Pen(Brushes.Black, 2);
 
-        int x;
-        int y;
-        bool f = true;
+        int COORDS_TEMP_x;
+        int COORDS_TEMP_y;
 
-        bool c = false;
+        bool MOUSE_cursor = false;
 
-        List<Point> POINT_temp = new List<Point>();
+        List<Point> COORDS_POINTS_list = new List<Point>();
+        List<Point> COORDS_POINTS_GARBAGE_list = new List<Point>();
         Point MOUSE_offset = new Point();
-        Point[] points = new Point[] { };
+        Point[] COORDS_POINTS_array = new Point[] { };
+        Point[] COORDS_POINTS_GARBAGE_array = new Point[] { };
+
+        bool OBJECT_falling = false;
 
         public MainForm()
         {

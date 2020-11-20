@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DrawBattle
 {
-    class DrawingObject : Drawing
+    class Strongbox
     {
+
     }
 }

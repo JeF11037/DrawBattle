@@ -21,11 +21,12 @@ namespace DrawBattle
 
         bool MOUSE_cursor = false;
 
-        List<Point> COORDS_POINTS_list = new List<Point>();
-        List<Point> COORDS_POINTS_GARBAGE_list = new List<Point>();
-        Point MOUSE_offset = new Point();
-        Point[] COORDS_POINTS_array = new Point[] { };
-        Point[] COORDS_POINTS_GARBAGE_array = new Point[] { };
+        List<PointF> COORDS_POINTS_list = new List<PointF>();
+        List<PointF> COORDS_POINTS_GARBAGE_list = new List<PointF>();
+        PointF MOUSE_offset = new PointF();
+        PointF[] COORDS_POINTS_array = new PointF[] { };
+        PointF[] COORDS_POINTS_GARBAGE_array = new PointF[] { };
+        float COORDS_POINTS_lower;
 
         bool OBJECT_falling = false;
 
